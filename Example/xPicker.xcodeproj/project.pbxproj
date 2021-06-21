@@ -39,12 +39,12 @@
 		607FACE51AFB9204008FA782 /* xPicker_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = xPicker_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		7BBA6688B7400E9F4A725A5B /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		7BBA6688B7400E9F4A725A5B /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		94B4E6F2A81B46731FF3DF96 /* Pods-xPicker_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xPicker_Example.release.xcconfig"; path = "Target Support Files/Pods-xPicker_Example/Pods-xPicker_Example.release.xcconfig"; sourceTree = "<group>"; };
-		A03AB73BEA9313B5D4638B67 /* xPicker.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = xPicker.podspec; path = ../xPicker.podspec; sourceTree = "<group>"; };
+		A03AB73BEA9313B5D4638B67 /* xPicker.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = xPicker.podspec; path = ../xPicker.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A1B1A6734982C82E0034D1DA /* Pods-xPicker_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xPicker_Tests.debug.xcconfig"; path = "Target Support Files/Pods-xPicker_Tests/Pods-xPicker_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C519EACB70D63D10745736A0 /* Pods-xPicker_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xPicker_Tests.release.xcconfig"; path = "Target Support Files/Pods-xPicker_Tests/Pods-xPicker_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		C6D368C493EBB7F9B60F4C38 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		C6D368C493EBB7F9B60F4C38 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		C8FD06951A5B81F8102BF929 /* Pods_xPicker_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_xPicker_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE5F245F2285FC187E566EB7 /* Pods-xPicker_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xPicker_Example.debug.xcconfig"; path = "Target Support Files/Pods-xPicker_Example/Pods-xPicker_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -77,7 +77,6 @@
 				A1B1A6734982C82E0034D1DA /* Pods-xPicker_Tests.debug.xcconfig */,
 				C519EACB70D63D10745736A0 /* Pods-xPicker_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -227,6 +226,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -313,10 +313,18 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-xPicker_Example/Pods-xPicker_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/xAlert/xAlert.framework",
+				"${BUILT_PRODUCTS_DIR}/xDefine/xDefine.framework",
+				"${BUILT_PRODUCTS_DIR}/xExtension/xExtension.framework",
+				"${BUILT_PRODUCTS_DIR}/xKit/xKit.framework",
 				"${BUILT_PRODUCTS_DIR}/xPicker/xPicker.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/xAlert.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/xDefine.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/xExtension.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/xKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/xPicker.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
