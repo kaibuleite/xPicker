@@ -42,8 +42,8 @@ public class xRoundCornerView: xView {
         self.maskLayer.backgroundColor = UIColor.clear.cgColor
         self.maskLayer.fillColor = UIColor.red.cgColor
         self.maskLayer.lineWidth = 1
-        self.maskLayer.lineCap = kCALineCapRound
-        self.maskLayer.lineJoin = kCALineJoinRound
+        self.maskLayer.lineCap = .round
+        self.maskLayer.lineJoin = .round
     }
     public override func viewDidAppear() {
         super.viewDidAppear()
