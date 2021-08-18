@@ -27,13 +27,13 @@
                                 <rect key="frame" x="0.0" y="602" width="414" height="260"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WMH-Up-zyq">
-                                        <rect key="frame" x="0.0" y="44" width="414" height="896"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="R8y-AI-tnH">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="260"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4fO-hf-88k" customClass="xContainerView" customModule="xKit">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4fO-hf-88k">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ubW-aO-ca8">
@@ -91,9 +91,9 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="WMH-Up-zyq" firstAttribute="top" secondItem="fK1-vq-QWj" secondAttribute="top" id="Fhl-Jb-F9y"/>
                                     <constraint firstItem="R8y-AI-tnH" firstAttribute="top" secondItem="zef-Nj-qUJ" secondAttribute="top" id="Hw3-sb-5ZL"/>
                                     <constraint firstAttribute="trailing" secondItem="R8y-AI-tnH" secondAttribute="trailing" id="Lcu-Rl-aOd"/>
+                                    <constraint firstItem="WMH-Up-zyq" firstAttribute="top" secondItem="zef-Nj-qUJ" secondAttribute="top" id="Wdz-Zh-WzN"/>
                                     <constraint firstAttribute="bottom" secondItem="R8y-AI-tnH" secondAttribute="bottom" id="a9I-8E-sjA"/>
                                     <constraint firstItem="WMH-Up-zyq" firstAttribute="leading" secondItem="zef-Nj-qUJ" secondAttribute="leading" id="fUb-OZ-oWu"/>
                                     <constraint firstAttribute="trailing" secondItem="WMH-Up-zyq" secondAttribute="trailing" id="l1p-Yz-3LA"/>
