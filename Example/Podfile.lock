@@ -6,10 +6,10 @@ PODS:
   - xDefine (1.0.4)
   - xExtension (1.1.1):
     - xDefine
-  - xKit (1.0.6):
+  - xKit (1.0.7):
     - xDefine
     - xExtension
-  - xPicker (1.0.1):
+  - xPicker (1.0.3):
     - xAlert
     - xKit
 
@@ -31,8 +31,8 @@ SPEC CHECKSUMS:
   xAlert: b9715279e95f712fdd6a7cb263b543be3ed598cb
   xDefine: ca6c6eef825544db8b43409e66dbff05eca7ac58
   xExtension: 70d1f6b92b268f1e36236f8be26ed86c72628a0b
-  xKit: 60f95439ecf0de4fa575b51801274be297f5bdb2
-  xPicker: 4d2ef11223949df0028081f6b525f38d9de70944
+  xKit: c73bf18bc82b101000b81d226bd0fea3cbba654a
+  xPicker: de9f5cf7c274d2c06189179d755ff8688e4db645
 
 PODFILE CHECKSUM: 753e1d6983b7ad38d4b337d57588b3e09d57004c
 
