@@ -48,6 +48,9 @@
                                                                 <state key="normal" title="取消">
                                                                     <color key="titleColor" systemColor="darkTextColor"/>
                                                                 </state>
+                                                                <connections>
+                                                                    <action selector="cancelBtnClick:" destination="Ucy-kz-dgq" eventType="touchUpInside" id="xDE-J3-3vn"/>
+                                                                </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dlV-0U-uej">
                                                                 <rect key="frame" x="60" y="0.0" width="294" height="44"/>
@@ -64,6 +67,9 @@
                                                                 <state key="normal" title="确定">
                                                                     <color key="titleColor" systemColor="darkTextColor"/>
                                                                 </state>
+                                                                <connections>
+                                                                    <action selector="sureBtnClick:" destination="Ucy-kz-dgq" eventType="touchUpInside" id="qAD-fh-Qw9"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
