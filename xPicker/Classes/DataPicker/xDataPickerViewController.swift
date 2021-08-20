@@ -13,6 +13,8 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
     // MARK: - Handler
     /// 选择数据回调
     public typealias xHandlerChooseData = ([xDataPickerModel]) -> Void
+    /// 完成回调
+    public typealias xHandlerChooseDateCompleted = () -> Void
     
     // MARK: - IBOutlet Property
     /// 标题标签
@@ -27,10 +29,12 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
     private var columnChooseRowArray = [Int]()
     /// 回调
     private var chooseHandler : xHandlerChooseData?
+    private var completedHandler : xHandlerChooseDateCompleted?
     
     // MARK: - 内存释放
     deinit {
         self.chooseHandler = nil
+        self.completedHandler = nil
         self.picker.dataSource = nil
         self.picker.delegate = nil
     }
@@ -39,6 +43,10 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
     public override class func xDefaultViewController() -> Self {
         let vc = xDataPickerViewController.xNew(storyboard: "xDataPickerViewController")
         return vc as! Self
+    }
+    public override func dismiss() {
+        super.dismiss()
+        self.completedHandler?()
     }
     
     // MARK: - IBAction Func
@@ -60,16 +68,18 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
     /// 显示选择器
     /// - Parameters:
     ///   - title: 标题
-    ///   - springDamping: 弹性阻尼，越小效果越明显
-    ///   - springVelocity: 弹性修正速度，越大修正越快
-    ///   - handler: 回调
+    ///   - isSpring: 是否开启弹性动画
+    ///   - handler1: 选中数据
+    ///   - handler2: 弹窗消失
     public func display(title : String,
                         isSpring : Bool = true,
-                        choose handler : @escaping xHandlerChooseData)
+                        choose handler1 : @escaping xHandlerChooseData,
+                        completed handler2 : xHandlerChooseDateCompleted? = nil)
     {
         // 保存数据
         self.titleLbl.text = title
-        self.chooseHandler = handler
+        self.chooseHandler = handler1
+        self.completedHandler = handler2
         // 执行动画
         super.display(isSpring: isSpring)
     }
