@@ -22,12 +22,22 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
     /// 选择器
     @IBOutlet weak var picker: UIPickerView!
     
+    // MARK: - Public Property
+    /// 字体
+    public var itemFont = UIFont.systemFont(ofSize: 15)
+    /// 高度
+    public var itemHeight = CGFloat(44)
+    /// 行数
+    public var itemNumberOfLines = 1
+    /// 对齐方式
+    public var itemtextAlignment = NSTextAlignment.center
+    
     // MARK: - Private Property
     /// 数据源
     private var dataArray = [[xDataPickerModel]]()
     /// 每一列选中的行
     private var columnChooseRowArray = [Int]()
-    /// 回调
+    // 回调
     private var chooseHandler : xHandlerChooseData?
     private var completedHandler : xHandlerChooseDateCompleted?
     
@@ -125,7 +135,30 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
         return model.name
     }
     
+    /// 跟Cell类似
+    public func pickerView(_ pickerView: UIPickerView,
+                           viewForRow row: Int,
+                           forComponent component: Int,
+                           reusing view: UIView?) -> UIView
+    {
+        var lbl = view as? UILabel
+        if lbl == nil {
+            lbl = UILabel()
+            lbl?.font = self.itemFont
+            lbl?.numberOfLines = self.itemNumberOfLines
+            lbl?.textAlignment = self.itemtextAlignment
+        }
+        lbl?.text = self.pickerView(pickerView, titleForRow: row, forComponent: component)
+        return lbl!
+    }
+    
     // MARK: - UIPickerViewDelegate
+    /// 设置行高
+    public func pickerView(_ pickerView: UIPickerView,
+                           rowHeightForComponent component: Int) -> CGFloat
+    {
+        return self.itemHeight
+    }
     /// 选中某列某行
     public func pickerView(_ pickerView: UIPickerView,
                            didSelectRow row: Int,

@@ -16,6 +16,8 @@ public class xMutableDataPickerModel: NSObject {
     public var name = ""
     /// 附带信息
     public var info : Any?
+    /// 父级
+    public weak var parent : xMutableDataPickerModel?
     /// 子级
     public var childList = [xMutableDataPickerModel]() {
         didSet {
@@ -26,16 +28,12 @@ public class xMutableDataPickerModel: NSObject {
             }
         }
     }
-    
-    // MARK: - Private Property
-    /// 父级
-    weak var parent : xMutableDataPickerModel?
     /// 行
-    var row = 0
+    public var row = 0
     /// 列
-    var column = 0
+    public var column = 0
     /// 行编号
-    var rowNumber : String {
+    public var rowNumber : String {
         if let parent = self.parent {
             return parent.rowNumber + "\(self.row)"
         }

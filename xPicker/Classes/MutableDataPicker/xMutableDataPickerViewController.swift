@@ -13,12 +13,24 @@ public class xMutableDataPickerViewController: xPushAlertViewController, UIPicke
     // MARK: - Handler
     /// 选择数据回调
     public typealias xHandlerChooseMutableData = ([xMutableDataPickerModel]) -> Void
+    /// 完成回调
+    public typealias xHandlerChooseDateCompleted = () -> Void
     
     // MARK: - IBOutlet Property
     /// 标题标签
     @IBOutlet weak var titleLbl: UILabel!
     /// 选择器
     @IBOutlet weak var picker: UIPickerView!
+    
+    // MARK: - Public Property
+    /// 字体
+    public var itemFont = UIFont.systemFont(ofSize: 15)
+    /// 高度
+    public var itemHeight = CGFloat(44)
+    /// 行数
+    public var itemNumberOfLines = 1
+    /// 对齐方式
+    public var itemtextAlignment = NSTextAlignment.center
     
     // MARK: - Private Property
     /// 数据源
@@ -31,12 +43,14 @@ public class xMutableDataPickerViewController: xPushAlertViewController, UIPicke
     private var minDataLength = Int.max
     /// 最长数据长度
     private var maxDataLength = Int.zero
-    /// 回调
+    // 回调
     private var chooseHandler : xHandlerChooseMutableData?
+    private var completedHandler : xHandlerChooseDateCompleted?
     
     // MARK: - 内存释放
     deinit {
         self.chooseHandler = nil
+        self.completedHandler = nil
         self.picker.dataSource = nil
         self.picker.delegate = nil
     }
@@ -45,6 +59,10 @@ public class xMutableDataPickerViewController: xPushAlertViewController, UIPicke
     public override class func xDefaultViewController() -> Self {
         let vc = xMutableDataPickerViewController.xNew(storyboard: "xMutableDataPickerViewController")
         return vc as! Self
+    }
+    public override func dismiss() {
+        super.dismiss()
+        self.completedHandler?()
     }
     
     // MARK: - IBAction Func
@@ -71,11 +89,13 @@ public class xMutableDataPickerViewController: xPushAlertViewController, UIPicke
     ///   - handler: 回调
     public func display(title : String,
                         isSpring : Bool = true,
-                        choose handler : @escaping xHandlerChooseMutableData)
+                        choose handler1 : @escaping xHandlerChooseMutableData,
+                        completed handler2 : xHandlerChooseDateCompleted? = nil)
     {
         // 保存数据
         self.titleLbl.text = title
-        self.chooseHandler = handler
+        self.chooseHandler = handler1
+        self.completedHandler = handler2
         // 执行动画
         super.display(isSpring: isSpring)
     }
@@ -186,7 +206,30 @@ public class xMutableDataPickerViewController: xPushAlertViewController, UIPicke
         return model.name
     }
     
+    /// 跟Cell类似
+    public func pickerView(_ pickerView: UIPickerView,
+                           viewForRow row: Int,
+                           forComponent component: Int,
+                           reusing view: UIView?) -> UIView
+    {
+        var lbl = view as? UILabel
+        if lbl == nil {
+            lbl = UILabel()
+            lbl?.font = self.itemFont
+            lbl?.numberOfLines = self.itemNumberOfLines
+            lbl?.textAlignment = self.itemtextAlignment
+        }
+        lbl?.text = self.pickerView(pickerView, titleForRow: row, forComponent: component)
+        return lbl!
+    }
+    
     // MARK: - UIPickerViewDelegate
+    /// 设置行高
+    public func pickerView(_ pickerView: UIPickerView,
+                           rowHeightForComponent component: Int) -> CGFloat
+    {
+        return self.itemHeight
+    }
     /// 选中某列某行
     public func pickerView(_ pickerView: UIPickerView,
                            didSelectRow row: Int,
@@ -199,7 +242,7 @@ public class xMutableDataPickerViewController: xPushAlertViewController, UIPicke
             self.columnChooseRowArray[i] = 0
             self.picker.selectRow(0, inComponent: i, animated: false)
         }
-        // 加载数据
+        // 更新数据源
         self.updateDataArray()
         for i in component + 1 ..< self.minDataLength {
             self.picker.reloadComponent(i)

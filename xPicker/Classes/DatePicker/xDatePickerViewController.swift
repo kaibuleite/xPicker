@@ -23,8 +23,12 @@ public class xDatePickerViewController: xPushAlertViewController {
     @IBOutlet weak var picker: UIDatePicker!
     
     // MARK: - Public Property
-    /// 配置
-    public var config = xDatePickerConfig()
+    /// 最晚日期
+    public var maxDate : Date?
+    /// 最早日期
+    public var minDate : Date?
+    /// 日期模式
+    public var model = UIDatePicker.Mode.date
     
     // MARK: - Private Property
     /// 回调
@@ -78,9 +82,9 @@ public class xDatePickerViewController: xPushAlertViewController {
         self.chooseHandler = handler1
         self.completedHandler = handler2
         
-        self.picker.maximumDate = config.maxDate
-        self.picker.minimumDate = config.minDate
-        self.picker.datePickerMode = config.model
+        self.picker.maximumDate = self.maxDate
+        self.picker.minimumDate = self.minDate
+        self.picker.datePickerMode = self.model
         // 执行动画
         super.display(isSpring: isSpring)
     }
