@@ -24,7 +24,6 @@ public class xMutableDataPickerModel: NSObject {
             for (i, model) in self.childList.enumerated() {
                 model.parent = self
                 model.row = i
-                model.column = self.column + 1
             }
         }
     }

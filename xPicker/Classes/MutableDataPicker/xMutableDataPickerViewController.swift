@@ -66,10 +66,10 @@ public class xMutableDataPickerViewController: xPushAlertViewController, UIPicke
     }
     
     // MARK: - IBAction Func
-    @IBAction func cancelBtnClick(_ sender: UIButton) {
+    @IBAction public func cancelBtnClick(_ sender: UIButton) {
         self.dismiss()
     }
-    @IBAction func sureBtnClick(_ sender: UIButton) {
+    @IBAction public func sureBtnClick(_ sender: UIButton) {
         var arr = [xMutableDataPickerModel]()
         for (i, list) in self.dataArray.enumerated() {
             let row = self.columnChooseRowArray[i]
@@ -144,7 +144,11 @@ public class xMutableDataPickerViewController: xPushAlertViewController, UIPicke
             self.totalDataArray.append(model)
             // 子集不为空，继续遍历
             if model.childList.count > 0 {
-                self.forEach(dataArray: model.childList)
+                let list = model.childList
+                for obj in list {
+                    obj.column = model.column + 1
+                }
+                self.forEach(dataArray: list)
                 continue
             }
             // 子集为空，计算数据长度
@@ -187,7 +191,7 @@ public class xMutableDataPickerViewController: xPushAlertViewController, UIPicke
     /// 几列
     public func numberOfComponents(in pickerView: UIPickerView) -> Int
     {
-        return self.dataArray.count
+        return self.minDataLength
     }
     /// 每列有几行
     public func pickerView(_ pickerView: UIPickerView,
