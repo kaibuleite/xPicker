@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'xPicker'
-  s.version          = '1.1.2   '
+  s.version          = '1.1.2'
   s.summary          = 'A short description of xPicker.'
   s.swift_version    = '5'      # Swift版本号
 
