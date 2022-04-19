@@ -21,10 +21,6 @@ open class xCountDownButton: xButton {
     /// 倒计时背景颜色
     @IBInspectable public var backgroundCountdownColor : UIColor = .lightGray
     
-    /// 边框粗细
-    @IBInspectable public var borderWidth : CGFloat = 0
-    /// 普通时边框颜色
-    @IBInspectable public var borderNormalColor : UIColor = .darkText
     /// 倒计时边框颜色
     @IBInspectable public var borderCountdownColor : UIColor = .lightGray
     
@@ -46,10 +42,8 @@ open class xCountDownButton: xButton {
         self.setTitle(" \(self.defaultTitle) ", for: .normal)
         self.setTitleColor(titleNormalColor, for: .normal)
         self.backgroundColor = self.backgroundNormalColor
-        if self.borderWidth > 0 {
-            self.layer.borderWidth = self.borderWidth
-            self.layer.borderColor = self.borderNormalColor.cgColor
-        }
+        self.layer.borderWidth = self.borderWidth
+        self.layer.borderColor = self.borderColor.cgColor
     }
     
     // MARK: - Public Func
@@ -92,7 +86,7 @@ open class xCountDownButton: xButton {
                                for: .normal)
             self.backgroundColor = self.backgroundNormalColor
             if self.borderWidth > 0 {
-                self.layer.borderColor = self.borderNormalColor.cgColor
+                self.layer.borderColor = self.borderColor.cgColor
             }
             self.isUserInteractionEnabled = true
         }

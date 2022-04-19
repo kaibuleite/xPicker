@@ -30,15 +30,16 @@ public class xChooseMapNavigationActionSheet: NSObject {
     ///   - targetName: 目的地名称
     ///   - targetCoordinate: 目的地坐标
     public static func display(from viewController : UIViewController,
-                               targetName : String,
-                               targetCoordinate: CLLocationCoordinate2D)
+                               appName : String,
+                               poiName : String,
+                               destination: CLLocationCoordinate2D)
     {
         let alert = UIAlertController.init(title: "选择", message: nil, preferredStyle: .actionSheet)
         // 高德地图 https://lbs.amap.com/api/amap-mobile/guide/ios/navi
         if UIApplication.shared.canOpenURL(URL.init(string: "iosamap://")!) {
             let gaode = UIAlertAction.init(title: "高德地图", style: .default) {
                 (sender) in
-                self.openGaodeMap(with: targetName, coordinate: targetCoordinate)
+                self.openAMap(appName: appName, poiName: poiName, destination: destination)
             }
             alert.addAction(gaode)
         }
@@ -46,14 +47,14 @@ public class xChooseMapNavigationActionSheet: NSObject {
         if UIApplication.shared.canOpenURL(URL.init(string: "baidumap://")!) {
             let baidu = UIAlertAction.init(title: "百度地图", style: .default) {
                 (sender) in
-                self.openBaiduMap(with: targetName, coordinate: targetCoordinate)
+                self.openBaiduMap(appName: appName, poiName: poiName, destination: destination)
             }
             alert.addAction(baidu)
         }
         // 苹果自带地图
         let apple = UIAlertAction.init(title: "苹果地图", style: .default) {
             (sender) in
-            self.openAppleMap(with: targetName, coordinate: targetCoordinate)
+            self.openAppleMap(appName: appName, poiName: poiName, destination: destination) 
         }
         alert.addAction(apple)
         // 取消
@@ -64,15 +65,16 @@ public class xChooseMapNavigationActionSheet: NSObject {
     }
     
     /// 打开高德地图
-    public static func openGaodeMap(with name : String,
-                                    coordinate : CLLocationCoordinate2D)
+    public static func openAMap(appName : String,
+                                poiName : String,
+                                destination : CLLocationCoordinate2D)
     {
         // 拼接导航信息
         var urlStr = "iosamap://navi?"
-        urlStr += "sourceApplication=福豆中康" + "&"
-        urlStr += "poiname=\(name)" + "&"
-        urlStr += "lat=\(coordinate.latitude)" + "&"
-        urlStr += "lon=\(coordinate.longitude)" + "&"
+        urlStr += "sourceApplication=\(appName)" + "&"
+        urlStr += "poiname=\(poiName)" + "&"
+        urlStr += "lat=\(destination.latitude)" + "&"
+        urlStr += "lon=\(destination.longitude)" + "&"
         /*dev=0 这里填0就行了，跟上面的gcj02一个意思 1代表wgs84 也用不上*/
         urlStr += "dev=0" + "&"
         /*导航方式（0 速度快；1 费用少；2路程短...*/
@@ -85,14 +87,15 @@ public class xChooseMapNavigationActionSheet: NSObject {
     }
     
     /// 打开百度地图
-    public static func openBaiduMap(with name : String,
-                                    coordinate : CLLocationCoordinate2D)
+    public static func openBaiduMap(appName : String,
+                                    poiName : String,
+                                    destination : CLLocationCoordinate2D)
     {
         // 拼接导航信息
         var urlStr = "baidumap://map/direction?"
         urlStr += "origin={{我的位置}}" + "&"
-        urlStr += "destination=latlng:\(coordinate.latitude),\(coordinate.longitude)" + "|"
-        urlStr += "name=\(name)" + "&"
+        urlStr += "destination=latlng:\(destination.latitude),\(destination.longitude)" + "|"
+        urlStr += "name=\(poiName)" + "&"
         urlStr += "mode=driving" + "&" // 开车
         /*
          coord_type 允许的值为 bd09ll、gcj02、wgs84，
@@ -106,14 +109,15 @@ public class xChooseMapNavigationActionSheet: NSObject {
     }
     
     /// 打开苹果地图
-    public static func openAppleMap(with name : String,
-                                    coordinate : CLLocationCoordinate2D)
+    public static func openAppleMap(appName : String,
+                                    poiName : String,
+                                    destination : CLLocationCoordinate2D)
     {
         // 设置起点和终点
         let currentLoc = MKMapItem.forCurrentLocation()
-        let toPlace = MKPlacemark.init(coordinate: coordinate, addressDictionary: nil)
+        let toPlace = MKPlacemark.init(coordinate: destination, addressDictionary: nil)
         let toLoc = MKMapItem.init(placemark: toPlace)
-        toLoc.name = name
+        toLoc.name = poiName
         // 跳转地图
         /*
          *调用app自带导航，需要传入一个数组和一个字典，数组中放入MKMapItem，

@@ -1,15 +1,15 @@
 PODS:
-  - xAlert (1.0.7):
+  - xAlert (1.0.8):
     - xDefine
     - xExtension
     - xKit
   - xDefine (1.0.4)
-  - xExtension (1.1.1):
+  - xExtension (1.1.2):
     - xDefine
-  - xKit (1.0.7):
+  - xKit (1.1.3):
     - xDefine
     - xExtension
-  - xPicker (1.0.3):
+  - xPicker (1.1.1):
     - xAlert
     - xKit
 
@@ -28,11 +28,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  xAlert: b9715279e95f712fdd6a7cb263b543be3ed598cb
+  xAlert: 2c49ebe14f1a192256a62ccda1e298c5c6f29774
   xDefine: ca6c6eef825544db8b43409e66dbff05eca7ac58
-  xExtension: 70d1f6b92b268f1e36236f8be26ed86c72628a0b
-  xKit: c73bf18bc82b101000b81d226bd0fea3cbba654a
-  xPicker: de9f5cf7c274d2c06189179d755ff8688e4db645
+  xExtension: c0850b5b3c3103c3e57a5be8acdd402daaf02c16
+  xKit: 9a36ad3ba289fa86bfb9999db7c2d6db49ef3b06
+  xPicker: 6c860ecadbbb87ceeaafc7964da5d9340261c52c
 
 PODFILE CHECKSUM: 753e1d6983b7ad38d4b337d57588b3e09d57004c
 
