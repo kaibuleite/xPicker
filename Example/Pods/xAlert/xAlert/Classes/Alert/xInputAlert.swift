@@ -54,4 +54,58 @@ public class xInputAlert: NSObject {
         
         viewController.present(alert, animated: true, completion: nil)
     }
+    
+    /// 显示输入弹窗
+    /// - Parameters:
+    ///   - viewController: 父控制器
+    ///   - title: 标题
+    ///   - placeholder: 占位符
+    ///   - keyboardType: 键盘类型
+    ///   - sureTitle: 确定标题
+    ///   - cancelTitle: 取消标题
+    ///   - sureHandler: 确定回调
+    ///   - cancelHandler: 取消回调
+    public static func display(from viewController : UIViewController,
+                               title : String?,
+                               placeholders : [String],
+                               keyboardTypes : [UIKeyboardType]? = nil,
+                               sureTitle : String? = "确定",
+                               cancelTitle : String? = "取消",
+                               sure handler1 : @escaping ([String]) -> Void,
+                               cancel handler2 : @escaping () -> Void)
+    {
+        let alert = UIAlertController.init(title: title,
+                                           message: nil,
+                                           preferredStyle: .alert)
+        // 输入框
+        for (i, str) in placeholders.enumerated() {
+            alert.addTextField {
+                (input) in
+                input.placeholder = str
+                guard let types = keyboardTypes else { return }
+                guard i < types.count else { return }
+                let type = types[i]
+                input.keyboardType = type
+            }
+        }
+        // 确定
+        let sure = UIAlertAction.init(title: sureTitle, style: .default){
+            (sender) in
+            var list = [String]()
+            for input in alert.textFields ?? [] {
+                let str = input.text ?? ""
+                list.append(str)
+            }
+            handler1(list)
+        }
+        alert.addAction(sure)
+        // 取消
+        let cancel = UIAlertAction.init(title: cancelTitle, style: .cancel) {
+            (sender) in
+            handler2()
+        }
+        alert.addAction(cancel)
+        
+        viewController.present(alert, animated: true, completion: nil)
+    }
 }

@@ -14,50 +14,43 @@ public class xNavigationView: xNibView {
     /// 返回按钮点击回调
     public typealias HandkerClickBackBtn = (UIButton) -> Void
     
-    // MARK: - IBOutlet Property
-    /// 背景色
-    @IBOutlet public weak var barColorView: xGradientColorView!
-    /// 返回按钮
-    @IBOutlet weak var backBtn: UIButton!
-    /// 标题标签
-    @IBOutlet weak var titleLbl: UILabel!
-    /// 分割线
-    @IBOutlet weak var lineView: xLineView!
-    
     // MARK: - IBInspectable Property
     /// 是否返回root（默认false）
     @IBInspectable public var isPopRootViewController : Bool = false
     /// 是否显示返回按钮
     @IBInspectable public var isShowBackBtn: Bool = true {
-        didSet {
-            self.backBtn.isHidden = !self.isShowBackBtn
-        }
+        willSet { self.backBtn?.isHidden = !newValue }
     }
     /// 标题
     @IBInspectable public var title : String = "" {
-        didSet {
-            self.titleLbl.text = self.title
-        }
+        willSet { self.titleLbl?.text = newValue }
     }
     /// 标题颜色
     @IBInspectable public var titleColor: UIColor = .darkText {
-        didSet {
-            self.titleLbl.textColor = self.titleColor
-            self.backBtn.tintColor = self.titleColor
-        }
-    }
-    /// 分割线颜色
-    @IBInspectable public var lineColor: UIColor = UIColor.lightGray {
-        didSet {
-            self.lineView.lineColor = self.lineColor
+        willSet {
+            self.titleLbl?.textColor = newValue
+            self.backBtn?.tintColor = newValue
         }
     }
     /// 导航栏颜色
     @IBInspectable public var barColor : UIColor = UIColor.xNew(hex: "F7F6F6") {
-        didSet {
-            self.backgroundColor = self.barColor
-        }
+        willSet { self.barColorView?.backgroundColor = newValue }
     }
+    /// 分割线颜色
+    @IBInspectable public var lineColor: UIColor = UIColor.lightGray {
+        willSet { self.lineView?.lineColor = newValue }
+    }
+    
+    // MARK: - IBOutlet Property
+    /// 渐变背景色
+    @IBOutlet public weak var barColorView: xGradientColorView?
+    /// 返回按钮
+    @IBOutlet weak var backBtn: UIButton?
+    /// 标题标签
+    @IBOutlet weak var titleLbl: UILabel?
+    /// 分割线
+    @IBOutlet weak var lineView: xLineView?
+    
     // MARK: - Private Property
     /// 返回按钮点击回调
     var backHandler : HandkerClickBackBtn?
@@ -68,22 +61,17 @@ public class xNavigationView: xNibView {
     }
     
     // MARK: - Public Override Func
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-        self.barColorView.backgroundColor = self.barColor
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        self.backBtn?.isHidden = !self.isShowBackBtn
+        self.titleLbl?.text = self.title
+        self.titleLbl?.textColor = self.titleColor
+        self.backBtn?.tintColor = self.titleColor
+        self.barColorView?.backgroundColor = self.barColor
+        self.lineView?.lineColor = self.lineColor
     }
     public override func viewDidAppear() {
         super.viewDidAppear()
-        self.titleLbl.textColor = self.titleColor
-        self.lineView.lineColor = self.lineColor
-        self.barColorView.backgroundColor = self.barColor
-        self.backBtn.tintColor = self.titleColor
-        self.backBtn.isHidden = !self.isShowBackBtn
-        // 标题
-        self.titleLbl.text = self.title
-        if self.title.isEmpty {
-            self.titleLbl.text = self.vc?.title
-        }
     }
     
     // MARK: - Public Func

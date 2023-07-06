@@ -34,14 +34,6 @@ public class xChoosePhotoActionSheet: NSObject {
         let actionSheet = UIAlertController.init(title: nil,
                                                  message: nil,
                                                  preferredStyle: .actionSheet)
-        // 相册
-        let album = UIAlertAction.init(title: albumTitle, style: .default) {
-            (sender) in
-            let picker = xImagePickerController()
-            picker.allowsEditing = allowsEditing
-            picker.displayAlbum(from: viewController, choose: handler)
-        }
-        actionSheet.addAction(album)
         // 相机
         let camera = UIAlertAction.init(title: cameraTitle, style: .default) {
             (sender) in
@@ -50,6 +42,14 @@ public class xChoosePhotoActionSheet: NSObject {
             picker.displayCamera(from: viewController, choose: handler)
         }
         actionSheet.addAction(camera)
+        // 相册
+        let album = UIAlertAction.init(title: albumTitle, style: .default) {
+            (sender) in
+            let picker = xImagePickerController()
+            picker.allowsEditing = allowsEditing
+            picker.displayAlbum(from: viewController, choose: handler)
+        }
+        actionSheet.addAction(album)
         // 取消
         let cancel = UIAlertAction.init(title: cancelTitle, style: .cancel, handler : nil)
         actionSheet.addAction(cancel)

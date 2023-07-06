@@ -5,7 +5,7 @@
 //  Created by Mac on 2020/9/18.
 //
 
-import UIKit
+import xKit
 import xAlert
 
 public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -13,14 +13,16 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
     // MARK: - Handler
     /// 选择数据回调
     public typealias xHandlerChooseData = ([xDataPickerModel]) -> Void
-    /// 完成回调
-    public typealias xHandlerChooseDateCompleted = () -> Void
     
     // MARK: - IBOutlet Property
     /// 标题标签
-    @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var titleStackView: UIStackView!
     /// 选择器
     @IBOutlet weak var picker: UIPickerView!
+    /// 取消按钮
+    @IBOutlet public weak var cancelBtn: xButton!
+    /// 确定按钮
+    @IBOutlet public weak var sureBtn: xButton!
     
     // MARK: - Public Property
     /// 字体
@@ -30,71 +32,56 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
     /// 行数
     public var itemNumberOfLines = 1
     /// 对齐方式
-    public var itemtextAlignment = NSTextAlignment.center
+    public var itemTextAlignment = NSTextAlignment.center
     
     // MARK: - Private Property
     /// 数据源
-    private var dataArray = [[xDataPickerModel]]()
+    var dataArray = [[xDataPickerModel]]()
     /// 每一列选中的行
-    private var columnChooseRowArray = [Int]()
+    var chooseRowArray = [Int]()
     // 回调
-    private var chooseHandler : xHandlerChooseData?
-    private var completedHandler : xHandlerChooseDateCompleted?
+    var chooseHandler : xHandlerChooseData?
     
     // MARK: - 内存释放
     deinit {
         self.chooseHandler = nil
-        self.completedHandler = nil
         self.picker.dataSource = nil
         self.picker.delegate = nil
     }
     
     // MARK: - Public Override Func
     public override class func xDefaultViewController() -> Self {
-        let vc = xDataPickerViewController.xNew(storyboard: "xDataPickerViewController")
-        return vc as! Self
+        let vc = Self.xNew(storyboard: nil)
+        return vc
     }
-    public override func dismiss() {
-        super.dismiss()
-        self.completedHandler?()
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        // 基本配置
     }
     
     // MARK: - IBAction Func
-    @IBAction func cancelBtnClick(_ sender: UIButton) {
-        self.dismiss()
-    }
     @IBAction func sureBtnClick(_ sender: UIButton) {
-        var arr = [xDataPickerModel]()
-        for (i, list) in self.dataArray.enumerated() {
-            let row = self.columnChooseRowArray[i]
-            let model = list[row]
-            arr.append(model)
+        print("\(#function) in \(type(of: self))")
+        
+        var list = [xDataPickerModel]()
+        for (i, itemArr) in self.dataArray.enumerated() {
+            guard let row = self.chooseRowArray.xObject(at: i) else { continue }
+            guard let item = itemArr.xObject(at: row) else { continue }
+            list.append(item)
         }
-        self.chooseHandler?(arr)
+        self.chooseHandler?(list)
         self.dismiss()
     }
 
     // MARK: - Public Func
-    /// 显示选择器
-    /// - Parameters:
-    ///   - title: 标题
-    ///   - isSpring: 是否开启弹性动画
-    ///   - handler1: 选中数据
-    ///   - handler2: 弹窗消失
-    public func display(title : String,
-                        isSpring : Bool = true,
-                        choose handler1 : @escaping xHandlerChooseData,
-                        completed handler2 : xHandlerChooseDateCompleted? = nil)
+    /// 添加回调
+    public func addChooseItem(handler : @escaping xDataPickerViewController.xHandlerChooseData)
     {
-        // 保存数据
-        self.titleLbl.text = title
-        self.chooseHandler = handler1
-        self.completedHandler = handler2
-        // 执行动画
-        super.display(isSpring: isSpring)
+        self.chooseHandler = handler
     }
     /// 重新加载数据
-    public func reload(dataArray : [[xDataPickerModel]])
+    public func reload(titles : [String],
+                       dataArray : [[xDataPickerModel]])
     {
         guard dataArray.count > 0 else {
             print("⚠️ 没有数据，不加载")
@@ -102,11 +89,26 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
         }
         self.picker.dataSource = self
         self.picker.delegate = self
+        // 移除旧标题
+        for view in self.titleStackView.arrangedSubviews {
+            self.titleStackView.removeArrangedSubview(view)
+            view.removeFromSuperview()
+        }
+        // 添加新标题
+        for title in titles {
+            let lbl = UILabel()
+            lbl.text = title
+            lbl.font = .systemFont(ofSize: 16, weight: .medium)
+            lbl.textAlignment = .center
+            self.titleStackView.addArrangedSubview(lbl)
+        }
+        self.titleStackView.setNeedsLayout()
+        self.titleStackView.layoutIfNeeded()
         // 重新加载
         self.dataArray = dataArray
-        self.columnChooseRowArray = .init(repeating: 0, count: dataArray.count)
-        self.picker.reloadAllComponents()
+        self.chooseRowArray = .init(repeating: 0, count: dataArray.count)
         // 重置状态
+        self.picker.reloadAllComponents()
         for i in 0 ..< dataArray.count {
             self.picker.selectRow(0, inComponent: i, animated: false)
         }
@@ -122,17 +124,21 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
     public func pickerView(_ pickerView: UIPickerView,
                            numberOfRowsInComponent component: Int) -> Int
     {
-        let list = self.dataArray[component]
-        return list.count
+        var count = self.dataArray.count
+        guard let itemArr = self.dataArray.xObject(at: component) else { return count }
+        count = itemArr.count
+        return count
     }
     /// 为指定的列和行赋值
     public func pickerView(_ pickerView: UIPickerView,
                            titleForRow row: Int,
                            forComponent component: Int) -> String?
     {
-        let list = self.dataArray[component]
-        let model = list[row]
-        return model.name
+        var title = ""
+        guard let itemArr = self.dataArray.xObject(at: component) else { return title }
+        guard let item = itemArr.xObject(at: row) else { return title }
+        title = item.name
+        return title
     }
     
     /// 跟Cell类似
@@ -146,7 +152,7 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
             lbl = UILabel()
             lbl?.font = self.itemFont
             lbl?.numberOfLines = self.itemNumberOfLines
-            lbl?.textAlignment = self.itemtextAlignment
+            lbl?.textAlignment = self.itemTextAlignment
         }
         lbl?.text = self.pickerView(pickerView, titleForRow: row, forComponent: component)
         return lbl!
@@ -164,7 +170,7 @@ public class xDataPickerViewController: xPushAlertViewController, UIPickerViewDa
                            didSelectRow row: Int,
                            inComponent component: Int)
     {
-        self.columnChooseRowArray[component] = row
+        self.chooseRowArray[component] = row
     }
     
 }

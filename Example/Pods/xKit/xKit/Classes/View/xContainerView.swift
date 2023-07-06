@@ -11,15 +11,13 @@ public class xContainerView: xView {
     
     // MARK: - IBInspectable Property
     /// 填充色
-    @IBInspectable public var fillColor : UIColor = .clear {
-        didSet {
-            self.backgroundColor = self.fillColor
-        }
+    @IBInspectable open var fillColor : UIColor = .clear {
+        willSet { self.backgroundColor = newValue }
     }
     
     // MARK: - Public Override Func
-    public override func viewDidLoad() {
-        super.viewDidLoad()
+    public override func awakeFromNib() {
+        super.awakeFromNib()
         self.backgroundColor = self.fillColor
     }
 }

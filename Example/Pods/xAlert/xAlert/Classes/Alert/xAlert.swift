@@ -45,4 +45,30 @@ public class xAlert: NSObject {
         
         viewController.present(alert, animated: true, completion: nil)
     }
+    
+    /// 显示提示
+    /// - Parameters:
+    ///   - viewController: 父控制器
+    ///   - title: 标题
+    ///   - message: 提示内容
+    ///   - submitTitle: 提交标题 
+    ///   - handler: 确定回调
+    public static func displayTip(from viewController : UIViewController,
+                                  title : String?,
+                                  message : String?,
+                                  submitTitle : String? = "确定",
+                                  handler : @escaping () -> Void)
+    {
+        let alert = UIAlertController.init(title: title,
+                                           message: message,
+                                           preferredStyle: .alert)
+        // 确定
+        let submit = UIAlertAction.init(title: submitTitle, style: .default) {
+            (sender) in
+            handler()
+        }
+        alert.addAction(submit)
+        
+        viewController.present(alert, animated: true, completion: nil)
+    }
 }

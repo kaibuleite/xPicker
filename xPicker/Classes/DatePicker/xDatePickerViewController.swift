@@ -5,7 +5,7 @@
 //  Created by Mac on 2020/9/18.
 //
 
-import UIKit
+import xKit
 import xAlert
 
 public class xDatePickerViewController: xPushAlertViewController {
@@ -13,14 +13,16 @@ public class xDatePickerViewController: xPushAlertViewController {
     // MARK: - Handler
     /// 选择日期回调
     public typealias xHandlerChooseDate = (Double) -> Void
-    /// 完成回调
-    public typealias xHandlerChooseDateCompleted = () -> Void
 
     // MARK: - IBOutlet Property
     /// 标题标签
-    @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet public weak var titleLbl: UILabel!
     /// 选择器
     @IBOutlet weak var picker: UIDatePicker!
+    /// 取消按钮
+    @IBOutlet public weak var cancelBtn: xButton!
+    /// 确定按钮
+    @IBOutlet public weak var sureBtn: xButton!
     
     // MARK: - Public Property
     /// 最晚日期
@@ -32,30 +34,27 @@ public class xDatePickerViewController: xPushAlertViewController {
     
     // MARK: - Private Property
     /// 回调
-    private var chooseHandler : xHandlerChooseDate?
-    private var completedHandler : xHandlerChooseDateCompleted?
+    var chooseHandler : xHandlerChooseDate?
     
     // MARK: - 内存释放
     deinit {
         self.chooseHandler = nil
-        self.completedHandler = nil
     }
     
     // MARK: - Public Override Func
     public override class func xDefaultViewController() -> Self {
-        let vc = xDatePickerViewController.xNew(storyboard: "xDatePickerViewController")
-        return vc as! Self
+        let vc = Self.xNew(storyboard: nil)
+        return vc
     }
-    public override func dismiss() {
-        super.dismiss()
-        self.completedHandler?()
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        // 基本配置
     }
     
     // MARK: - IBAction Func
-    @IBAction func cancelBtnClick(_ sender: UIButton) {
-        self.dismiss()
-    }
     @IBAction func sureBtnClick(_ sender: UIButton) {
+        print("\(#function) in \(type(of: self))")
+        
         let date = self.picker.date
         let timeStamp = date.timeIntervalSince1970
         self.chooseHandler?(timeStamp)
@@ -63,24 +62,19 @@ public class xDatePickerViewController: xPushAlertViewController {
     }
     
     // MARK: - Public Func
+    /// 添加回调
+    public func addChooseItem(handler : @escaping xDatePickerViewController.xHandlerChooseDate)
+    {
+        self.chooseHandler = handler
+    }
     /// 显示选择器
-    /// - Parameters:
-    ///   - title: 标题
-    ///   - date: 当前时间
-    ///   - isSpring: 是否开启弹性动画
-    ///   - handler1: 选中数据
-    ///   - handler2: 弹窗消失
     public func display(title : String,
                         date : Date = .init(),
-                        isSpring : Bool = true,
-                        choose handler1 : @escaping xHandlerChooseDate,
-                        completed handler2 : xHandlerChooseDateCompleted? = nil)
+                        isSpring : Bool = true)
     {
         // 保存数据
         self.titleLbl.text = title
         self.picker.date = date
-        self.chooseHandler = handler1
-        self.completedHandler = handler2
         
         self.picker.maximumDate = self.maxDate
         self.picker.minimumDate = self.minDate

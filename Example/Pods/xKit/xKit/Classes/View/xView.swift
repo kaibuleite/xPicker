@@ -6,18 +6,32 @@
 //
 
 import UIKit
+import xExtension
 
 open class xView: UIView {
     
     // MARK: - IBInspectable Property
     /// 边框线
-    @IBInspectable public var borderWidth : CGFloat = 0
+    @IBInspectable public var borderWidth : CGFloat = 0 {
+        willSet { self.layer.borderWidth = newValue }
+    }
     /// 边框颜色
-    @IBInspectable public var borderColor : UIColor = .clear
+    @IBInspectable public var borderColor : UIColor = .clear {
+        willSet { self.layer.borderColor = newValue.cgColor}
+    }
     
-    // MARK: - Private Property
-    /// 是否加载过样式
-    private var isInitCompleted = false
+    // MARK: - Public Property
+    /// 用于内存释放提示(可快速定位被释放的对象)
+    open var typeEmoji : String { return "" }
+    
+    // MARK: - 内存释放
+    deinit {
+        guard self.typeEmoji != "" else { return }
+        let info = self.xClassInfoStruct
+        let space = info.space
+        let name = info.name
+        print("\(self.typeEmoji)【\(space).\(name)】")
+    }
     
     // MARK: - Open Override Func
     open override func awakeFromNib() {
@@ -27,38 +41,32 @@ open class xView: UIView {
     required public init?(coder aDecoder: NSCoder) {
         // 没有指定构造器时，需要实现NSCoding的指定构造器
         super.init(coder: aDecoder)
-        // 如果没有实现awakeFromNib，则会调用该方法
+        /*
+         如果没有实现awakeFromNib，则会调用该方法
+         如过是通过xib或storeboard实现的控件一定要用awakeFromNib
+         */
         self.initCompleted()
     }
     public override init(frame: CGRect) {
         super.init(frame: frame)
         self.initCompleted()
     }
-
-    // MARK: - Open Func
-    /// 视图已加载
-    open func viewDidLoad() {
-        guard self.borderWidth > 0 else { return }
+    /// 初始化完成
+    func initCompleted()
+    {
+        self.backgroundColor = .clear
         self.layer.borderWidth = self.borderWidth
         self.layer.borderColor = self.borderColor.cgColor
-    }
-    /// 视图已显示（GCD调用）
-    open func viewDidAppear() { }
-    
-    // MARK: - Private Func
-    /// 初始化完成
-    private func initCompleted()
-    {
-        // 添加锁,防止重复加载
-        objc_sync_enter(self)
-        guard self.isInitCompleted == false else { return }
         
-        self.viewDidLoad()
         DispatchQueue.main.async {
             self.viewDidAppear()
         }
-        
-        self.isInitCompleted = true
-        objc_sync_exit(self)
     }
+
+    // MARK: - Open Func 
+    /// 视图已显示（GCD调用）
+    open func viewDidAppear() {
+        // 子类实现
+    }
+    
 }

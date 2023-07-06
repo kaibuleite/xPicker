@@ -43,6 +43,7 @@ public class xActionSheet: NSObject {
             handler2()
         }
         actionSheet.addAction(cancel)
+        
         viewController.present(actionSheet, animated: true, completion: nil)
     }
 }

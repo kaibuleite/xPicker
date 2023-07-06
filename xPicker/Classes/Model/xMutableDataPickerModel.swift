@@ -34,7 +34,7 @@ public class xMutableDataPickerModel: NSObject {
     /// 行编号
     public var rowNumber : String {
         if let parent = self.parent {
-            return parent.rowNumber + "\(self.row)"
+            return parent.rowNumber + "|" + "\(self.row)"
         }
         return "\(self.row)"
     }
